@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dream Campus Wishlist</title>
+
+  <style>
+
+    .add-btn-container{
+  display:flex;
+  justify-content:center;
+  margin-bottom:35px;
+}
+
+.add-campus-btn{
+  background:#7b5cff;
+  color:white;
+  border:none;
+  padding:14px 24px;
+  border-radius:18px;
+  cursor:pointer;
+  font-size:17px;
+  transition:0.3s;
+}
+
+.add-campus-btn:hover{
+  transform:scale(1.05);
+  background:#5f43df;
+}
+
+.popup input,
+.popup textarea{
+  width:100%;
+  margin-bottom:15px;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:#f3f3ff;
+  font-size:15px;
+}
+
+.popup textarea{
+  height:120px;
+  resize:none;
+}
+
+.submit-btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:16px;
+  background:#7b5cff;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background: linear-gradient(135deg, #f6d5ff, #d8e7ff);
+      padding:40px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:1200px;
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:40px;
+    }
+
+    .title h1{
+      font-size:50px;
+      color:#4d3d73;
+      margin-bottom:10px;
+    }
+
+    .title p{
+      color:#6f6291;
+      font-size:18px;
+    }
+
+    .campus-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+      gap:25px;
+    }
+
+    .card{
+      background:white;
+      border-radius:25px;
+      padding:25px;
+      text-align:center;
+      cursor:pointer;
+      transition:0.3s;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .card:hover{
+      transform:translateY(-8px) scale(1.03);
+      box-shadow:0 14px 28px rgba(0,0,0,0.15);
+    }
+
+    .card img{
+      width:90px;
+      height:90px;
+      object-fit:contain;
+      margin-bottom:15px;
+    }
+
+    .card h2{
+      color:#574381;
+      margin-bottom:8px;
+      font-size:28px;
+    }
+
+    .card p{
+      color:#777;
+      font-size:15px;
+    }
+
+    /* POPUP */
+
+    .overlay{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100vh;
+      background:rgba(0,0,0,0.5);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .popup{
+      background:white;
+      width:100%;
+      max-width:650px;
+      border-radius:30px;
+      padding:35px;
+      position:relative;
+      animation:showPopup 0.3s ease;
+    }
+
+    @keyframes showPopup{
+      from{
+        opacity:0;
+        transform:scale(0.8);
+      }
+      to{
+        opacity:1;
+        transform:scale(1);
+      }
+    }
+
+    .close-btn{
+      position:absolute;
+      top:15px;
+      right:22px;
+      font-size:30px;
+      cursor:pointer;
+      color:#777;
+      transition:0.2s;
+    }
+
+    .close-btn:hover{
+      color:#ff4d6d;
+      transform:rotate(90deg);
+    }
+
+    .popup-header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      margin-bottom:25px;
+    }
+
+    .popup-header img{
+      width:80px;
+      height:80px;
+      object-fit:contain;
+    }
+
+    .popup-header h2{
+      color:#574381;
+      font-size:34px;
+    }
+
+    .popup ul{
+      padding-left:22px;
+      line-height:2;
+      color:#444;
+      font-size:17px;
+    }
+
+    .popup p{
+      margin-top:20px;
+      color:#777;
+      font-style:italic;
+    }
+
+    @media(max-width:600px){
+
+      .title h1{
+        font-size:35px;
+      }
+
+      .popup-header{
+        flex-direction:column;
+        text-align:center;
+      }
+
+      .popup-header h2{
+        font-size:28px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="title">
+      <h1>🎓 College Preparation</h1>
+      <p>Click kampus impianmu buat lihat persiapannya ✨</p>
+    </div>
+
+    <div class="add-btn-container">
+  <button class="add-campus-btn" onclick="openAddPopup()">
+    ➕ Add Campus
+  </button>
+</div>
+
+    <div class="campus-grid">
+
+      <div class="card" onclick="openPopup('nus')">
+        <img src="https://i.pinimg.com/1200x/b8/77/d4/b877d458cc05f9e2f8f259957963b52a.jpg">
+        <h2>NUS</h2>
+        <p>National University of Singapore</p>
+      </div>
+
+      <div class="card" onclick="openPopup('ui')">
+        <img src="https://i.pinimg.com/1200x/83/73/ec/8373ec906d4e21eef3b794a2b45e98f7.jpg">
+        <h2>UI</h2>
+        <p>Universitas Indonesia</p>
+      </div>
+
+      <div class="card" onclick="openPopup('itb')">
+        <img src="https://i.pinimg.com/736x/27/7d/d1/277dd15f3991014dd075a6669adb1f50.jpg">
+        <h2>ITB</h2>
+        <p>Institut Teknologi Bandung</p>
+      </div>
+
+      <div class="card" onclick="openPopup('zhejiang')">
+        <img src="https://i.pinimg.com/736x/82/31/06/82310614d4de5bbfe90aedff8567d3af.jpg">
+        <h2>ZJU</h2>
+        <p>Zhejiang University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('yonsei')">
+        <img src="https://i.pinimg.com/1200x/58/d8/fc/58d8fc4b87cff93d9df65516a9cd3018.jpg">
+        <h2>Yonsei</h2>
+        <p>Yonsei University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('ugm')">
+        <img src="https://i.pinimg.com/1200x/2f/6c/8b/2f6c8b991e643061d80c70748712e060.jpg">
+        <h2>UGM</h2>
+        <p>Universitas Gadjah Mada</p>
+      </div>
+
+      <div class="card" onclick="openPopup('ntu')">
+        <img src="https://i.pinimg.com/1200x/26/e1/24/26e124372b33ad71cd6eefa6e2c11577.jpg">
+        <h2>NTU</h2>
+        <p>Nanyang Technological University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('peking')">
+        <img src="https://i.pinimg.com/736x/79/3d/b8/793db8d7feb8e788c828457dc9819c58.jpg">
+        <h2>PKU</h2>
+        <p>Peking University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('thu')">
+        <img src="https://i.pinimg.com/736x/df/a4/08/dfa40874ff88496409f720b4163dd3f9.jpg">
+        <h2>THU</h2>
+        <p>Tsinghua University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('fdu')">
+        <img src="https://i.pinimg.com/736x/0b/4f/83/0b4f83f99d4540f21120f4b3fd30737e.jpg">
+        <h2>FDU</h2>
+        <p>Fudan University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('mit')">
+        <img src="https://i.pinimg.com/1200x/78/45/58/7845586bd362f6b6b194d3c37cf08a6a.jpg">
+        <h2>MIT</h2>
+        <p>Massachusetts Institute of Technology</p>
+      </div>
+
+      <div class="card" onclick="openPopup('icl')">
+        <img src="https://i.pinimg.com/736x/1b/95/f3/1b95f31766f3f8da1aea252786c1c044.jpg">
+        <h2>ICL</h2>
+        <p>Imperial College London</p>
+      </div>
+
+      <div class="card" onclick="openPopup('su')">
+        <img src="https://i.pinimg.com/736x/93/0a/1a/930a1a8596cf641b4731423113e8d006.jpg">
+        <h2>Stanford</h2>
+        <p>Stanford University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('oxf')">
+        <img src="https://i.pinimg.com/1200x/aa/8c/16/aa8c1672dd1ac7a2ee514e714fe6a0a5.jpg">
+        <h2>Oxf.</h2>
+        <p>University of Oxford</p>
+      </div>
+
+      <div class="card" onclick="openPopup('hu')">
+        <img src="https://i.pinimg.com/736x/e9/a1/06/e9a10634a075cfdb85e8a0242f10f78e.jpg">
+        <h2>Harvard</h2>
+        <p>Harvard University</p>
+      </div>
+
+      <div class="card" onclick="openPopup('cantab')">
+        <img src="https://i.pinimg.com/736x/97/99/7a/97997a266e2ce9b06b185608deae6d59.jpg">
+        <h2>Cantab</h2>
+        <p>University of Cambridge</p>
+      </div>
+
+      <div class="card" onclick="openPopup('ucb')">
+        <img src="https://i.pinimg.com/736x/4e/f7/f0/4ef7f02710d73c204302fdc9e620ed7c.jpg">
+        <h2>UC Berkeley</h2>
+        <p>University of California, Berkeley</p>
+      </div>
+
+      <div class="card" onclick="openPopup('ucl')">
+        <img src="https://i.pinimg.com/736x/47/05/fa/4705fad172a3c316cb4e20b2a13c5bdb.jpg">
+        <h2>UCL</h2>
+        <p>University College London</p>
+      </div>
+
+      <div class="card" onclick="openPopup('caltech')">
+        <img src="https://i.pinimg.com/736x/84/21/ce/8421ce9ce2ca2c4418e9b4e507119065.jpg">
+        <h2>Caltech</h2>
+        <p>California Institute of Technology</p>
+      </div>
+
+      <div class="card" onclick="openPopup('ethz')">
+        <img src="https://i.pinimg.com/736x/d5/e3/aa/d5e3aa76c941a6ec8172019d4fd7e01f.jpg">
+        <h2>ETH Zurich</h2>
+        <p>Swiss Federal Institute of Technology Zurich</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- POPUP -->
+
+  <div class="overlay" id="overlay">
+
+    <div class="popup">
+
+      <span class="close-btn" onclick="closePopup()">✕</span>
+
+      <div class="popup-header">
+        <img id="popupLogo">
+        <h2 id="popupTitle"></h2>
+      </div>
+
+      <ul id="popupContent"></ul>
+
+      <p>Good luck future student!</p>
+
+    </div>
+
+  </div>
+
+<!-- ADD CAMPUS POPUP -->
+
+<div class="overlay" id="addOverlay">
+
+  <div class="popup">
+
+    <span class="close-btn"
+    onclick="closeAddPopup()">✕</span>
+
+    <div class="popup-header">
+      <h2>➕ Add New Campus</h2>
+    </div>
+
+    <input type="text"
+    id="campusName"
+    placeholder="Campus Full Name">
+
+    <input type="text"
+    id="campusAbbr"
+    placeholder="Campus Abbreviation">
+
+    <input type="text"
+    id="campusLogo"
+    placeholder="Campus Logo URL">
+
+    <textarea id="campusRequirements"
+    placeholder="Requirements (separate with commas)">
+    </textarea>
+
+    <button class="submit-btn"
+    onclick="addCampus()">
+      Add Campus
+    </button>
+
+  </div>
+
+ </div>
+
+  <script>
+
+    const campusData = {
+
+      nus: {
+        title: "NUS",
+        logo: "https://i.pinimg.com/1200x/b8/77/d4/b877d458cc05f9e2f8f259957963b52a.jpg",
+        content: [
+          "Rapor Akademik SMA yang Unggul",
+          "Sertifikat Kemampuan Bahasa Inggris",
+          "Hasil Tes Standardisasi Internasional",
+          "Esai Motivasi (Personal Statement)",
+          "Portofolio dan Daftar Prestasi (Curriculum Vitae)"
+      ]
+      },
+
+      ui: {
+        title: "Universitas Indonesia",
+        logo: "https://i.pinimg.com/1200x/83/73/ec/8373ec906d4e21eef3b794a2b45e98f7.jpg",
+        content: [
+          "Meningkatkan dan Mempertahankan Nilai Rapor",
+          "Mengikuti UTBK SNBT",
+          "Mempersiapkan Materi Ujian SIMAK UI",
+          "Menyusun Portofolio Akademik",
+          "Menjaga Persyaratan Khusus Tiap Jurusan"
+        ]
+      },
+
+      itb: {
+        title: "Institut Teknologi Bandung",
+        logo: "https://i.pinimg.com/736x/27/7d/d1/277dd15f3991014dd075a6669adb1f50.jpg",
+        content: [
+          "Nilai Rapor Akademik",
+          "Skor Tes Potensi Akademik/UTBK",
+          "Sertifikat Kemampuan Bahasa Inggris",
+          "Portofolio Karya atau Seni",
+          "Sertifikat Prestasi Pendukung"
+        ]
+      },
+
+      zhejiang: {
+        title: "Zhejiang University",
+        logo: "https://i.pinimg.com/736x/82/31/06/82310614d4de5bbfe90aedff8567d3af.jpg",
+        content: [
+          "Sertifikat Kemampuan Bahasa (Mandarin/Inggris)",
+          "Legalisir Dokumen Akademik",
+          "Curriculum Vitae (CV) dan Motivation Letter",
+          "Surat Rekomendasi Akademik",
+          "Pendaftaran"
+        ]
+      },
+
+      yonsei: {
+        title: "Yonsei University",
+        logo: "https://i.pinimg.com/1200x/58/d8/fc/58d8fc4b87cff93d9df65516a9cd3018.jpg",
+        content: [
+          "Kemampuan Bahasa (Inggris atau Korea)",
+          "Penyetaraan dan Legalisasi Dokumen Akademik",
+          "Esai dan Portofolio yang Kuat",
+          "Curriculum Vitae (CV) dan Surat Rekomendasi",
+          "Riset Persyaratan Spesifik Jurusan"
+        ]
+      },
+
+      ugm: {
+        title: "Universitas Gadjah Mada",
+        logo: "https://i.pinimg.com/1200x/2f/6c/8b/2f6c8b991e643061d80c70748712e060.jpg",
+        content: [
+          "Mempertahankan Nilai Rapor (Semester 1-5)",
+          "Mempersiapkan Ujian UTBK-SNBT",
+          "Mengumpulkan Sertifikat Prestasi Akademik dan Non-Akademik",
+          "Legalisasi Berkas Akademik",
+          "Menentukan Strategi Program Studi"
+        ]
+      },
+
+      ntu: {
+        title: "Nanyang Technological University",
+        logo: "https://i.pinimg.com/1200x/26/e1/24/26e124372b33ad71cd6eefa6e2c11577.jpg",
+        content: [
+          "Transkrip Nilai Akademik",
+          "Sertifikat Kemampuan Bahasa Inggris",
+          "Tes Standar Tambahan (Opsional namun disarankan)",
+          "Surat Rekomendasi (Recommendation Letter)",
+          "Portofolio Khusus (Jika Mendaftar Jurusan Tertentu)"
+        ]
+      },
+
+      peking: {
+        title: "Peking University",
+        logo: "https://i.pinimg.com/736x/79/3d/b8/793db8d7feb8e788c828457dc9819c58.jpg",
+        content: [
+          "Sertifikasi Kemampuan Bahasa",
+          "Kualifikasi Akademik",
+          "Penyusunan Berkas Esai Akademik",
+          "Surat Rekomendasi (Recommendation Letter)",
+          "Program Pra-Universitas (Yuke)"
+        ]
+      },
+
+      thu: {
+        title: "Tsinghua University",
+        logo: "https://i.pinimg.com/736x/df/a4/08/dfa40874ff88496409f720b4163dd3f9.jpg",
+        content: [
+          "Transkrip Nilai Akademik yang Sangat Baik",
+          "Sertifikat Kemampuan Bahasa (Inggris atau Mandarin)",
+          "Surat Rekomendasi Akademik",
+          "Surat Pernyataan Pribadi (Personal Statement)",
+          "Portofolio dan Prestasi Ekstrakurikuler"
+        ]
+      },
+
+      fdu: {
+        title: "Fudan University",
+        logo: "https://i.pinimg.com/736x/0b/4f/83/0b4f83f99d4540f21120f4b3fd30737e.jpg",
+        content: [
+          "Ijazah dan Transkrip Nilai",
+          "Sertifikat Kemampuan Bahasa (Inggris atau Mandarin)",
+          "Rencana Studi atau Penelitian (Study Plan)",
+          "Surat Rekomendasi (Recommendation Letter)",
+          "Kualifikasi Khusus Program"
+        ]
+      },
+
+      mit: {
+        title: "Massachusetts Institute of Technology",
+        logo: "https://i.pinimg.com/1200x/78/45/58/7845586bd362f6b6b194d3c37cf08a6a.jpg",
+        content: [
+          "Prestasi dan Kurikulum Akademik yang Ketat",
+          "Skor Tes Standar Internasional",
+          "Pembangunan Portofolio Ekstrakurikuler",
+          "Surat Rekomendasi (Recommendation Letter)",
+          "Esai MIT yang Autentik"
+        ]
+      },
+
+      icl: {
+        title: "Imperial College London",
+        logo: "https://i.pinimg.com/736x/1b/95/f3/1b95f31766f3f8da1aea252786c1c044.jpg",
+        content: [
+          "Kualifikasi Kurikulum Internasional",
+          "Sertifikat Kemampuan Bahasa Inggris",
+          "Penyusunan Personal Statement",
+          "Surat Referensi Akademik",
+          "Tes Masuk Jurusan Tertentu"
+        ]
+      },
+
+      su: {
+        title: "Stanford University",
+        logo: "https://i.pinimg.com/736x/93/0a/1a/930a1a8596cf641b4731423113e8d006.jpg",
+        content: [
+          "Prestasi Akademik Luar Biasa (Transkrip Nilai)",
+          "Skor Tes Standar Internasional",
+          "Kemampuan Bahasa Inggris",
+          "Surat Rekomendasi yang Kuat",
+          "Pernyataan Tujuan / Esai Esensial (Personal Statement/SOP)"
+        ]
+      },
+
+      oxf: {
+        title: "University of Oxford",
+        logo: "https://i.pinimg.com/1200x/aa/8c/16/aa8c1672dd1ac7a2ee514e714fe6a0a5.jpg",
+        content: [
+          "Kualifikasi Akademik Tinggi",
+          "Kemampuan Bahasa Inggris",
+          "Tes Penerimaan Khusus (Admission Test)",
+          "Pernyataan Pribadi (Personal Statement)",
+          "Portofolio atau Tugas Tertulis"
+        ]
+      },
+
+      hu: {
+        title: "Harvard University",
+        logo: "https://i.pinimg.com/736x/e9/a1/06/e9a10634a075cfdb85e8a0242f10f78e.jpg",
+        content: [
+          "Transkrip Nilai Akademik Tinggi",
+          "Skor Tes Standardisasi Internasional",
+          "Kemampuan Bahasa Inggris (TOEFL/IELTS)",
+          "Esai Aplikasi dan Pernyataan Pribadi",
+          "Surat Rekomendasi (Recommendation Letter)"
+        ]
+      },
+
+      cantab: {
+        title: "University of Cambridge",
+        logo: "https://i.pinimg.com/736x/97/99/7a/97997a266e2ce9b06b185608deae6d59.jpg",
+        content: [
+          "Raih Nilai Akademik Tertinggi",
+          "Siapkan Bukti Kemampuan Bahasa Inggris",
+          "Ikuti Ujian Masuk Cambridge (Admissions Test)",
+          "Tulis Personal Statement yang Kuat",
+          "Latihan Menghadapi Wawancara Akademis"
+        ]
+      },
+
+      ucb: {
+        title: "University of California, Berkeley",
+        logo: "https://i.pinimg.com/736x/4e/f7/f0/4ef7f02710d73c204302fdc9e620ed7c.jpg",
+        content: [
+          "Memenuhi Persyaratan Mata Kuliah Akademik (A-G Requirements)",
+          "Memperoleh Ijazah dan Transkrip Nilai SMA",
+          "Mengikuti Tes Kecakapan Bahasa Inggris",
+          "Menulis Esai Aplikasi UC (Personal Insight Questions)",
+          "Menyertakan Ujian Kurikulum Nasional Tambahan"
+        ]
+      },
+
+      ucl: {
+        title: "University College London",
+        logo: "https://i.pinimg.com/736x/47/05/fa/4705fad172a3c316cb4e20b2a13c5bdb.jpg",
+        content: [
+          "Mencapai Standar Nilai Akademik yang Setara (A-Level/IB)",
+          "Memenuhi Persyaratan Kemampuan Bahasa Inggris",
+          "Menyelesaikan Personal Statement",
+          "Mempersiapkan Transkrip Nilai dan Surat Rekomendasi",
+          "Mengikuti Ujian Masuk Tambahan untuk Jurusan Tertentu"
+        ]
+      },
+
+      caltech: {
+        title: "California Institute of Technology",
+        logo: "https://i.pinimg.com/736x/84/21/ce/8421ce9ce2ca2c4418e9b4e507119065.jpg",
+        content: [
+          "Penyelesaian Kurikulum STEM Tingkat Lanjut",
+          "Bukti Penguasaan Materi (Ujian AP, IB, atau Sertifikasi)",
+          "Surat Rekomendasi Guru Akademik",
+          "Transkrip Nilai dengan Prestasi Akademik Sangat Tinggi",
+          "Skor Kemampuan Bahasa Inggris"
+        ]
+      },
+
+      ethz: {
+        title: "Swiss Federal Institute of Technology Zurich",
+        logo: "https://i.pinimg.com/736x/d5/e3/aa/d5e3aa76c941a6ec8172019d4fd7e01f.jpg",
+        content: [
+          "Penyetaraan Ijazah",
+          "Kemampuan Bahasa Pengantar",
+          "Transkrip Nilai Akademik",
+          "Dokumen Pendukung Pendidikan",
+          "Ujian Standar Tambahan (Jika Diperlukan)"
+        ]
+      }
+
+
+
+    };
+
+    function openPopup(campus){
+
+      const overlay = document.getElementById("overlay");
+      const popupTitle = document.getElementById("popupTitle");
+      const popupContent = document.getElementById("popupContent");
+      const popupLogo = document.getElementById("popupLogo");
+
+      popupTitle.innerText = campusData[campus].title;
+      popupLogo.src = campusData[campus].logo;
+
+      popupContent.innerHTML = "";
+
+      campusData[campus].content.forEach(item => {
+        popupContent.innerHTML += `<li>${item}</li>`;
+      });
+
+      overlay.style.display = "flex";
+    }
+
+    function closePopup(){
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function openAddPopup(){
+  document.getElementById("addOverlay")
+  .style.display = "flex";
+}
+
+function closeAddPopup(){
+  document.getElementById("addOverlay")
+  .style.display = "none";
+}
+
+function addCampus(){
+
+  const name =
+  document.getElementById("campusName").value;
+
+  const abbr =
+  document.getElementById("campusAbbr").value;
+
+  const logo =
+  document.getElementById("campusLogo").value;
+
+  const requirements =
+  document.getElementById("campusRequirements").value;
+
+  if(name === "" || abbr === "" ||
+     logo === "" || requirements === ""){
+
+    alert("Please fill all fields!");
+    return;
+  }
+
+  const id = abbr.toLowerCase();
+
+  campusData[id] = {
+
+    title: name,
+
+    logo: logo,
+
+    content: requirements.split(",")
+
+  };
+
+  const newCard = document.createElement("div");
+
+  newCard.classList.add("card");
+
+  newCard.setAttribute(
+    "onclick",
+    `openPopup('${id}')`
+  );
+
+  newCard.innerHTML = `
+  
+    <img src="${logo}">
+    
+    <h2>${abbr}</h2>
+
+    <p>${name}</p>
+  
+  `;
+
+  document.querySelector(".campus-grid")
+  .appendChild(newCard);
+
+  closeAddPopup();
+
+}
+
+    window.onclick = function(e){
+      const overlay = document.getElementById("overlay");
+
+      if(e.target == overlay){
+        closePopup();
+      }
+    }
+
+  </script>
+
+</body>
+</html>
